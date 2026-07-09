@@ -1,0 +1,14 @@
+name: frontend
+
+replicas: 2
+
+image:
+  repository: traefik/whoami
+  tag: v1.10.2
+
+service:
+  port: 80
+
+labels:
+  app: frontend
+  version: v1
