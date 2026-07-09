@@ -1,0 +1,5 @@
+name: frontend
+
+labels:
+
+  app: frontend
