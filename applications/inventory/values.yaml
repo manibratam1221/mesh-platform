@@ -3,3 +3,4 @@ name: inventory
 labels:
 
   app: inventory
+  version: v1

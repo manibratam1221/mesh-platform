@@ -2,10 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: {{ .Values.name }}
+  name: {{ include "mesh-service.fullname" . }}
+  labels:
+{{ include "mesh-service.labels" . | nindent 4 }}
 
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.replicaCount }}
 
   selector:
     matchLabels:
@@ -19,13 +21,22 @@ spec:
         version: {{ .Values.labels.version }}
 
     spec:
-
+      serviceAccountName: {{ include "mesh-service.fullname" .}}
       containers:
 
       - name: {{ .Values.name }}
-
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+        {{- if .Values.livenessProbe.enabled }}
+        livenessProbe:
+        {{- toYaml (omit .Values.livenessProbe "enabled") | nindent 10 }}
+        {{- end }}
+        {{- if .Values.readinessProbe.enabled }}
+        readinessProbe:
+        {{- toYaml (omit .Values.readinessProbe "enabled") | nindent 10 }}
+        {{- end }}
+        securityContext:{{ toYaml .Values.securityContext | nindent 10 }}
+        resources:
+{{ toYaml .Values.resources | nindent 12 }}
         ports:
-
-        - containerPort: 80
+        - containerPort: {{.Values.service.port }}

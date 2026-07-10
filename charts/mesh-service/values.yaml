@@ -1,14 +1,50 @@
-name: frontend
+name: app
 
-replicas: 2
+replicaCount: 2
 
 image:
   repository: traefik/whoami
   tag: v1.10.2
+  pullPolicy: IfNotPresent
 
 service:
+  type: ClusterIP
   port: 80
+  targetPort: 80
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
+
+serviceAccount:
+  create: true
+  name: ""
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  allowPrivilegeEscalation: false
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 2
+  periodSeconds: 5
 
 labels:
-  app: frontend
+  app: app
   version: v1

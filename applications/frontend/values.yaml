@@ -3,3 +3,4 @@ name: frontend
 labels:
 
   app: frontend
+  version: v1

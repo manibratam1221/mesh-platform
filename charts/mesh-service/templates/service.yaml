@@ -3,6 +3,8 @@ kind: Service
 
 metadata:
   name: {{ .Values.name }}
+  labels:
+{{ include "mesh-service.labels" . | indent 4 }}
 
 spec:
 
@@ -12,5 +14,4 @@ spec:
   ports:
 
   - port: {{ .Values.service.port }}
-
-    targetPort: 80
+    targetPort: {{ .Values.service.targetPort }}

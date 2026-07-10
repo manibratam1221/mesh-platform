@@ -3,3 +3,4 @@ name: notification
 labels:
 
   app: notification
+  version: v1

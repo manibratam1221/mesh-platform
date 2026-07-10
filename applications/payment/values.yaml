@@ -3,3 +3,4 @@ name: payment
 labels:
 
   app: payment
+  version: v1
