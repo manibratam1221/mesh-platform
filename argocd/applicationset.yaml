@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: mesh-services
+  namespace: argocd
+
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/manibratam1221/mesh-platform.git
+      revision: main
+
+      directories:
+      - path: applications/*
+
+  template:
+
+    metadata:
+      name: "{{path.basename}}"
+
+    spec:
+
+      project: mesh-platform
+
+      source:
+        repoURL: https://github.com/manibratam1221/mesh-platform.git
+        targetRevision: main
+
+        path: charts/mesh-service
+
+        helm:
+          valueFiles:
+          - ../../applications/{{path.basename}}/values.yaml
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: mesh-apps
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

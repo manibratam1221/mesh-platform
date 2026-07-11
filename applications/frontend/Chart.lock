@@ -1,0 +1,6 @@
+dependencies:
+- name: mesh-service
+  repository: file://../../charts/mesh-service
+  version: 0.1.0
+digest: sha256:1de302261ee3eeb4ea148c8cc3ed84ff00b2a393e9e6b6715a97f35b0b555a8b
+generated: "2026-07-11T04:18:22.610262+05:30"

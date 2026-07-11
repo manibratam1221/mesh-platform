@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: frontend-prod
+  namespace: argocd
+
+spec:
+
+  project: mesh-platform
+
+  source:
+
+    repoURL: git@github.com:manibratam1221/mesh-platform.git
+
+    targetRevision: main
+
+    path: applications/frontend
+
+  destination:
+
+    server: https://kubernetes.default.svc
+
+    namespace: prod
+
+  syncPolicy:
+
+    automated:
+
+      prune: true
+
+      selfHeal: true
+
+    syncOptions:
+    - CreateNamespace=true

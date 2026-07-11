@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: mesh-platform
+  namespace: argocd
+
+spec:
+  description: Mesh Platform Project
+
+  sourceRepos:
+  - "https://github.com/manibratam1221/mesh-platform.git"
+
+  destinations:
+  - namespace: mesh-apps
+    server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+  - group: "*"
+    kind: "*"
+
+  namespaceResourceWhitelist:
+  - group: "*"
+    kind: "*"

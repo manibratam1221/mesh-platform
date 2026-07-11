@@ -1,0 +1,8 @@
+apiVersion: v2
+name: notification
+version: 0.1.0
+
+dependencies:
+- name: mesh-service
+  version: 0.1.0
+  repository: "file://../../charts/mesh-service"

@@ -1,6 +1,48 @@
-name: frontend
+mesh-service:
 
-labels:
+  name: frontend
 
-  app: frontend
-  version: v1
+  replicaCount: 2
+
+  image:
+    repository: traefik/whoami
+    tag: v1.10.2
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+
+  labels:
+    app: frontend
+    version: v1
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 65532
+    allowPrivilegeEscalation: false
+
+  livenessProbe:
+    enabled: true
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+  readinessProbe:
+    enabled: true
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 2
+    periodSeconds: 5
