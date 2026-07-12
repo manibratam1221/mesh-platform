@@ -11,7 +11,13 @@ spec:
   - "https://github.com/manibratam1221/mesh-platform.git"
 
   destinations:
+  - namespace: qa
+    server: https://kubernetes.default.svc
+
   - namespace: prod
+    server: https://kubernetes.default.svc
+
+  - namespace: prod-eu
     server: https://kubernetes.default.svc
 
   clusterResourceWhitelist:
