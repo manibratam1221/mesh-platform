@@ -1,0 +1,26 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches:
+    - main
+
+jobs:
+
+  validate:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: azure/setup-helm@v4
+
+    - name: Helm Lint
+      run: |
+        for app in frontend payment inventory notification
+        do
+          helm dependency update applications/$app
+          helm lint applications/$app
+        done

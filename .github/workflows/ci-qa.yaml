@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - "feature/**"
+
+jobs:
+
+  validate:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: azure/setup-helm@v4
+
+    - name: Update dependencies
+      run: |
+        for app in frontend payment inventory notification
+        do
+          helm dependency update applications/$app
+        done
+
+    - name: Helm Lint
+      run: |
+        helm lint applications/frontend
+        helm lint applications/payment
+        helm lint applications/inventory
+        helm lint applications/notification
+
+    - name: Helm Template
+      run: |
+        helm template frontend applications/frontend >/dev/null
+        helm template payment applications/payment >/dev/null
+        helm template inventory applications/inventory >/dev/null
+        helm template notification applications/notification >/dev/null

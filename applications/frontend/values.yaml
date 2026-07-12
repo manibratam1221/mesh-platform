@@ -2,7 +2,7 @@ mesh-service:
 
   name: frontend
 
-  replicaCount: 2
+  replicaCount: 3
 
   image:
     repository: traefik/whoami
