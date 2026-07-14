@@ -1,9 +1,9 @@
-name: Pull Request Validation
+name: Feature Validation
 
 on:
-  pull_request:
+  push:
     branches:
-    - main
+    - "feature/**"
 
 permissions:
   contents: read
@@ -24,17 +24,22 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - uses: azure/setup-helm@v4
+    - name: Install Helm
+      uses: azure/setup-helm@v4
 
-    - run: |
+    - name: Build Dependency
+      run: |
         helm dependency update applications/${{ matrix.app }}
 
-    - run: |
+    - name: Helm Lint
+      run: |
         helm lint applications/${{ matrix.app }}
 
-    - run: |
+    - name: Helm Template
+      run: |
         helm template \
           ${{ matrix.app }} \
           applications/${{ matrix.app }} \
