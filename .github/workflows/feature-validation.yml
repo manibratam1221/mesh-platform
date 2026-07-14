@@ -1,0 +1,46 @@
+name: Feature Validation
+
+on:
+  push:
+    branches:
+    - "feature/**"
+
+permissions:
+  contents: read
+
+jobs:
+
+  helm-validation:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        app:
+        - frontend
+        - payment
+        - inventory
+        - notification
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Install Helm
+      uses: azure/setup-helm@v4
+
+    - name: Build Dependency
+      run: |
+        helm dependency update applications/${{ matrix.app }}
+
+    - name: Helm Lint
+      run: |
+        helm lint applications/${{ matrix.app }}
+
+    - name: Helm Template
+      run: |
+        helm template \
+          ${{ matrix.app }} \
+          applications/${{ matrix.app }} \
+          >/dev/null
